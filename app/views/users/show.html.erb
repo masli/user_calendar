@@ -1,0 +1,252 @@
+<style type="text/css">
+  .container {
+    width: 710px;
+  }
+  .fc-sat { color:blue; }
+  .fc-sun { color:red;  }
+</style>
+
+<table class="profile" summary="Profile information">
+  <tr>
+    <td class="main">
+      <h1>
+        <%= gravatar_for @user %>
+        <%= @user.name %>
+      </h1>
+
+
+    </td>
+  </tr>
+  <tr>
+    <td>
+
+  <style type="text/css">
+    .container {
+      width: 710px;
+    }
+  </style>
+
+
+  
+
+  <script>
+
+
+    $(document).ready(function(){
+
+
+      $.ajax({
+        type: 'POST',
+        url: '/events/get_events/',
+        data: '',
+        success: function(data){
+	var x= new Array();
+	x=data;
+
+
+	$('#calendar').fullCalendar({
+	  editable: true,
+	  header: {
+	    left: 'prev,next today',
+	    center: 'title',
+	    right: 'month,agendaWeek,agendaDay'
+	  },
+	  defaultView: 'month',
+	  height: 500,
+	  slotMinutes: 15,
+	  loading: function(bool){
+	    if (bool)
+	      $('#loading').show();
+	    else
+	      $('#loading').hide();
+	  },
+          
+	  events : eval(data),
+	  timeFormat: 'h:mm t{ - h:mm t} ',
+	  dragOpacity: '0.5',
+	  dayClick: function( date, allDay, jsEvent, view ) {
+
+	    var myDays=
+	      ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+
+	    thisDay=date.getDay()
+
+	    thisDay=myDays[thisDay]
+
+	    list_of_Holidays=["1-0","2-0","8-2","19-3","20-3","1-4","1-5","8-5","12-5","16-5","26-5","29-5","29-6","15-7","1-11","8-11","25-11","26-11"];
+
+	 var    ziua=date.getDate();
+	    var luna=date.getMonth();
+
+	  string=""+ziua.toString()+"-"+luna.toString()+"";
+	   
+	     if ( list_of_Holidays.indexOf(string)!=-1)
+	     {
+		    alert("You cannot book on this day! because is a national holiday");
+	     }
+
+	     else 
+	    if ((thisDay =="Saturday") ||(thisDay=="Sunday")) {
+	      //TRUE Clicked date smaller than today + daysToadd
+	      alert("You cannot book on this day!");
+	    }
+	    else
+	    {
+	       $('#create_event_dialog').dialog('open');
+	      $('#create_event_dialog').dialog({
+	        title: 'New Event',
+	        modal: false,
+	        width: 500,
+	        autoOpen: true,
+	        buttons: {
+		OK : function(){
+
+		  var title=$.trim($('#event_title').val());
+		  var description=$.trim($('#event_description').val());
+		  var project=$.trim($('select#event_project_id option:selected').val());
+		     var err="no"
+		     if (title==""){
+		        $('#error_creating_event').html('Completati titlul');
+		      err="yes"
+		      }
+
+		    if(description==""){
+		           $('#error_creating_event').html('Completati descrierea');
+		      err="yes"
+		      }
+		        if(err=="no"){
+		  $('#new_event').submit();
+		  $('#calendar').fullCalendar( 'refetchEvents' );
+
+		  $( this ).dialog( 'close');
+		        }
+
+		      else{
+		        $('#error_creating_event').show();
+		      }
+		},
+		Cancel:function(){
+		  $( this ).dialog( 'close' );
+		}
+	        },
+	        close:function(){
+		$('#event_title').val('');
+		$('#event_description').val('');
+	        }
+
+
+
+	      });
+	    }
+
+
+	  },
+
+
+
+	  eventDrop: function(event, dayDelta, minuteDelta, allDay, revertFunc){
+	    //              if (confirm('Are you sure about this change?')) {
+	    moveEvent(event, dayDelta, minuteDelta, allDay);
+	    //              }
+	    //              else {
+	    //                  revertFunc();
+	    //              }
+	  },
+
+	  eventResize: function(event, dayDelta, minuteDelta, revertFunc){
+	    //              if (confirm('Are you sure about this change?')) {
+	    resizeEvent(event, dayDelta, minuteDelta);
+	    //              }
+	    //              else {
+	    //                  revertFunc();
+	    //              }
+	  },
+
+	  eventClick: function(event, jsEvent, view){
+	    $('#event_actions').show();
+	    showEventDetails(event);
+	  }
+
+
+
+
+	});
+
+        }
+      });
+
+
+ 
+    });
+    
+
+  </script>
+  <div>
+    <div id='calendar'>
+    </div>
+  </div>
+  <div id = "desc_dialog" style ="display:none;">
+    <div id = "event_desc">
+    </div>
+    <br/>
+    <br/>
+    <div id = "event_actions">
+      <span id = "edit_event"></span>
+      <span id = "delete_event"></span>
+    </div>
+  </div>
+  <div id = "create_event_dialog" style ="display:none;">
+    <div class="error" id="error_creating_event" style="display:none">
+      
+    </div>
+    <div id = "create_event">
+
+      <%=form_for Event.new, :id=>'form_create_event',:url => {:controller=>'events',:action => :create}, :before => "$('#creating_events').show();", :complete => "$('#creating_events').hide();" do |f| %>
+        <p>
+	<%=f.label :title %>
+	<br/>
+	<%=f.text_field :title %>
+        </p>
+        <p>
+	<%=f.label :description %>
+	<br/>
+	<%=f.text_area :description, :rows => 4, :cols => 30 %>
+        </p>
+        <p>
+	<%=f.label :starttime, 'Start Time' %>
+	<br/>
+	<%=f.datetime_select :starttime %>
+        </p>
+        <p>
+	<%=f.label :endtime, 'End Time' %>
+	<br/>
+	<%=
+	
+	f.datetime_select :endtime %>
+        </p>
+        <p>
+	<%=f.label :all_day %>
+	<%=f.check_box :all_day %>
+        </p>
+        <p >
+	<%=f.label :project_id, "Project" %>
+	<%=f.select :project_id,  Project.all.collect {|p| [ p.name, p.id ] } %>
+        </p>
+     
+        <%=f.hidden_field :user_id, :value =>current_user[:id] %>
+        <p>
+	<span id = "creating_events" style = "display:none;">Creating, Please wait...</span>
+        </p>
+      <% end %>
+
+
+    </div>
+  </div>
+
+
+
+
+</td>
+</tr>
+</table>
+
