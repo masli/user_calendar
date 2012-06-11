@@ -1,5 +1,4 @@
 Fullcalendarlatest2::Application.routes.draw do
-  get "statictics/index"
 
   get "projects/index"
 
@@ -22,7 +21,9 @@ match '/events/move' ,:to=>'events#move'
 match '/events/resize' ,:to=>'events#resize'
 match '/events/edit', :to=>'events#edit'
 match '/events/update', :to=>'events#update'
+
 match '/statictics/index',:to=>'statictics#index'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

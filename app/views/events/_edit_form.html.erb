@@ -36,6 +36,7 @@
 	<%=f.hidden_field :id, :value => @event.id%>
 	<%=f.hidden_field :commit_button, :value => ""%>
 	<p>
+
 		<%if @event.projects -%>
 			<%=f.submit 'Update Only This Occurrence', :onclick => "document.getElementById('event_commit_button').value = this.value"%>
 			<%=f.submit 'Update All Occurrence', :onclick => "document.getElementById('event_commit_button').value = this.value"%>
@@ -43,6 +44,7 @@
 		<%else-%>
 			<%=f.submit 'Update', :onclick => "document.getElementById('event_commit_button').value = this.value"%>
 		<%end-%>
+
 
 		<span id = "updating_events" style = "display:none;">Updating, Please wait...</span>
 	</p>

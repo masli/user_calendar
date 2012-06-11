@@ -32,6 +32,7 @@ function showEventDetails(event){
         title = event.title;
         $('#delete_event').html("<a href = 'javascript:void(0);' onclick ='deleteEvent(" + event.id + ", " + false + ")'>Delete</a>");
     }
+
     $('#desc_dialog').dialog({
         title: title,
         modal: true,
@@ -84,6 +85,7 @@ function calendar_refetch_events(){
               center: 'title',
               right: 'month,agendaWeek,agendaDay'
           },
+
           defaultView: 'month',
           height: 500,
           slotMinutes: 15,

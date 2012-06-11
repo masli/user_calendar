@@ -5,7 +5,9 @@
 
 			<% if signed_in? %>
 				<li><%= link_to "Profile", current_user %></li>
+
 				<li><%= link_to "Statistics", :controller => "statictics", :action => "index" %></li>
+
 				<li><%= link_to "Settings", edit_user_path(current_user) %></li>
 			<% end %>
 

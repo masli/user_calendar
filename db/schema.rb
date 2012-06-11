@@ -11,6 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+
 ActiveRecord::Schema.define(:version => 20111019085216) do
 
   create_table "day_events", :force => true do |t|
@@ -23,6 +24,7 @@ ActiveRecord::Schema.define(:version => 20111019085216) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
 
   create_table "events", :force => true do |t|
     t.string   "title"
@@ -46,6 +48,7 @@ ActiveRecord::Schema.define(:version => 20111019085216) do
 
   create_table "users", :force => true do |t|
     t.string   "name"
+
     t.string   "encrypted_password"
     t.string   "salt"
     t.boolean  "admin",              :default => false

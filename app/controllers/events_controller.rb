@@ -12,11 +12,10 @@ class EventsController < ApplicationController
 		end
 
 			
-
 		create_events_to_database(@event)
 
-		
 
+		
 
 	end
   
@@ -104,9 +103,6 @@ class EventsController < ApplicationController
 
 
 
-
-
-
 	def create_events_to_database(event_principal)
 
 		title_event=event_principal[:title]
@@ -135,12 +131,16 @@ class EventsController < ApplicationController
 
 
 
+
 		if list_of_Holidays.index(string)
+
 			redirect_to :back,:notice=>"the start day is a holiday"
 
 		else
 
+
 			if list_of_Holidays.index(string2)
+
 				redirect_to :back,:notice=>"the end day is a holiday"
 
 			else
@@ -169,8 +169,10 @@ class EventsController < ApplicationController
 
 
 
+
 						if sd<ed
 							start=sd
+
 
 
 
@@ -178,17 +180,22 @@ class EventsController < ApplicationController
 								sd=sd+somevar.day
 								start_day_of_week=sd.strftime("%A")
 								string=""+sd.day.to_s+"-"+sd.month.to_s+""
+
 								if list_of_Holidays.index(string)!=nil
+
 
 									events << {:start=>start , :end=>sd-1.day}
 									sd=sd+somevar.day
 									start=sd
 
 								end
+
 								if start_day_of_week=="Saturday"
+
 									events << {:start=>start , :end=>sd-1.day}
 									sd=sd+2.day
 									start=sd
+
 
 
 								end
@@ -220,6 +227,7 @@ class EventsController < ApplicationController
 							# render :text =>events.to_json
 						else
 							@event = Event.new(:title=>title_event,:starttime=>starttime,:endtime=>endtime,:all_day=>all_day,:description=>description,:project_id=>project_id,:user_id=>user_id)
+
 							if event_principal[:all_day]=='0'
 								@event[:all_day]=false
 							end
@@ -231,9 +239,11 @@ class EventsController < ApplicationController
 									redirect_to :back,:notice=> @event.errors.full_messages(',').join("\n")
 								end
 
+
 							end
 
 						end
+
 
 
 
@@ -256,6 +266,8 @@ class EventsController < ApplicationController
 
 
 
+
 	
 	
+
 end
