@@ -1,10 +1,14 @@
 <style type="text/css">
-  .container {
-    width: 710px;
-  }
-  
+	.container {
+		width: 710px;
+		min-height:2000px;
+	}
+
 </style>
 <h1>Statistics</h1>
 
-<div id='chart'></div>
-<%= render_chart(@chart, 'chart') %> 
+<div id='chart' style='width: 650px; height: 240px;'></div>
+<%= render_chart(@chart, 'chart') %>
+
+<div id='pie_chart'></div>
+<%= render_chart @pie_chart, 'pie_chart' %>

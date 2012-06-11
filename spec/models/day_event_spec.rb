@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe "statictics/index.html.erb" do
+describe DayEvent do
   pending "add some examples to (or delete) #{__FILE__}"
 end
