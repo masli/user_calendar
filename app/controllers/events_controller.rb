@@ -1,22 +1,12 @@
 class EventsController < ApplicationController
 
-
 	def create
-
-		
-
-		
 		@event = Event.new(params[:event])
 		if params[:event][:all_day]=='0'
 			@event[:all_day]=false
 		end
-
 			
 		create_events_to_database(@event)
-
-
-		
-
 	end
   
 	def index
@@ -32,16 +22,7 @@ class EventsController < ApplicationController
 		end
 
 		events=events.to_json
-		
-
 		render :text=>events
-
-		
-
-
-
-
-
 	end
   
 	def show
@@ -57,8 +38,6 @@ class EventsController < ApplicationController
 			@event.save
 		end
 		render :text=>""
-
-
 	end
   
   
@@ -73,11 +52,7 @@ class EventsController < ApplicationController
   
 	def edit
 		@event = Event.find_by_id(params[:id])
-
-		
 		render :partial => 'events/edit_form', :object => @event
-		
-			
 	end
   
 	def update
@@ -85,23 +60,14 @@ class EventsController < ApplicationController
 		
 		@event.attributes = params[:event]
 		@event.save
-		
-
 		redirect_to :back
-
-
-	
 	end
   
 	def destroy
 		@event = Event.find_by_id(params[:id])
 		@event.destroy
 		render :text=>""
-
-    
 	end
-
-
 
 	def create_events_to_database(event_principal)
 
@@ -129,98 +95,50 @@ class EventsController < ApplicationController
 		luna=endtime.month
 		string2=""+ziua.to_s+"-"+luna.to_s+""
 
-
-
-
 		if list_of_Holidays.index(string)
-
 			redirect_to :back,:notice=>"the start day is a holiday"
-
 		else
-
-
 			if list_of_Holidays.index(string2)
-
 				redirect_to :back,:notice=>"the end day is a holiday"
-
 			else
-
-
 				if start_day_of_week=="Sunday" || start_day_of_week=="Saturday"
-
-
 					redirect_to :back,:notice=>"The start day should not be "+start_day_of_week.to_s
-
 				else
 					if end_day_of_week=="Sunday" || end_day_of_week=="Saturday"
-
-
 						redirect_to :back,:notice=>"The end day should not be "+end_day_of_week.to_s
-
 					else
-
 						sd=Date.parse(event_principal[:starttime].to_s)
 						ed=Date.parse(event_principal[:endtime].to_s)
 						somevar=1
-
-
-
 						events=[]
-
-
-
 
 						if sd<ed
 							start=sd
-
-
-
-
 							while sd<=ed
 								sd=sd+somevar.day
 								start_day_of_week=sd.strftime("%A")
 								string=""+sd.day.to_s+"-"+sd.month.to_s+""
 
 								if list_of_Holidays.index(string)!=nil
-
-
 									events << {:start=>start , :end=>sd-1.day}
 									sd=sd+somevar.day
 									start=sd
-
 								end
-
 								if start_day_of_week=="Saturday"
-
 									events << {:start=>start , :end=>sd-1.day}
 									sd=sd+2.day
 									start=sd
-
-
-
 								end
-
-
 							end
-
 							events << {:start=>start , :end=>sd-1.day}
-
-
 							events.each do |eveniment|
-
 								@event = Event.new(:title=>title_event,:starttime=>nil,:endtime=>nil,:all_day=>all_day,:description=>description,:project_id=>project_id,:user_id=>user_id)
 								if event_principal[:all_day]=='0'
 									@event[:all_day]=false
 								end
 								@event[:starttime]=eveniment[:start]
 								@event[:endtime]=eveniment[:end]+1.day
-
-
 								@event.save
-
-
-
-
 							end
 							redirect_to :back
 							#
@@ -238,25 +156,12 @@ class EventsController < ApplicationController
 								else
 									redirect_to :back,:notice=> @event.errors.full_messages(',').join("\n")
 								end
-
-
 							end
-
 						end
-
-
-
-
-
-
 					end
-
 				end
 			end
-
 		end
-
-
 
 	end
 

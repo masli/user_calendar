@@ -1,20 +1,11 @@
 class SessionsController < ApplicationController
 	def new
 		@title = "Sign in"
-
-		
 		if current_user!=nil
-
 			user=User.first(:conditions => {:id => current_user[:id]})
 			redirect_back_or user
-			
 		end
-		
-		
 	end
-
-
-
 
 	def create
 		user = User.authenticate(params[:session][:email],

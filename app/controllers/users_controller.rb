@@ -9,31 +9,18 @@ class UsersController < ApplicationController
 	end
   
 	def show
-
 		if current_user.nil?
 			redirect_to root_path
 		else
-			
 			@user=User.first(:conditions => {:id => current_user[:id]})
 			@title = @user.name
-			
 			path=request.path.split('/')
 			try_user=User.first(:conditions => {:id =>path[2]})
-			
-			  
 		 	if current_user?(try_user)==false
 				render :text => "You are not authorized to see that page "
 			end
-
-
 		end
-
-
-
-
 	end
-
- 
 
 	def new
 		@user  = User.new
@@ -44,7 +31,7 @@ class UsersController < ApplicationController
 		@user = User.new(params[:user])
 		if @user.save
 			sign_in @user
-			redirect_to @user, :flash => { :success => "Welcome to the Sample App!" }
+			redirect_to @user, :flash => { :success => "Welcome" }
 		else
 			@title = "Sign up"
 			render 'new'
