@@ -23,5 +23,5 @@ production:
   encoding: unicode
   database: mydb
   pool: 5
-  username: bogdan
-  password: bogdan
+  username: mihaela
+  password: mihaela
